@@ -1,15 +1,16 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
-use Illuminate\Http\Request;
-
 use App\Article;
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
+use Auth;
+use Carbon\Carbon;
 
 class ArticlesController extends Controller {
+
+	public function __construct() {
+		$this->middleware('auth', ['only' => 'create']);
+	}
 
 	public function index() {
 		$articles = Article::latest('published_at')->where('published_at', '<=', Carbon::now())->get();
@@ -27,7 +28,7 @@ class ArticlesController extends Controller {
 
 	public function store(ArticleRequest $request) {
 		$article = new Article($request->all());
-		\Auth::user()->articles()->save($article);
+		Auth::user()->articles()->save($article);
 		return redirect('articles');
 	}
 
