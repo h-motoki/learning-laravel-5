@@ -3,15 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ elixir('css/all.css') }}">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/app.css">
 </head>
 <body>
     <div class="container">
-        @yield('content')
+        @include('partials.flash')
+		@yield('content')
     </div>
 
     @yield('footer')
 
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    	$('div.alert').not('.alert-important').delay(3000).slideUp(300);
+    </script>
 </body>
 </html>

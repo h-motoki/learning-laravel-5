@@ -26,9 +26,11 @@ class ArticlesController extends Controller {
 	}
 
 	public function store(ArticleRequest $request) {
-		$article = new Article($request->all());
-		Auth::user()->articles()->save($article);
-		return redirect('articles');
+		Auth::user()->articles()->create($request->all());
+		return redirect('articles')->with([
+			'flash_message' => 'Your article has been created!',
+			'flash_message_important' => true,
+		]);
 	}
 
 	public function edit(Article $article) {
