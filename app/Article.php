@@ -1,7 +1,7 @@
 <?php namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model {
 
@@ -9,7 +9,7 @@ class Article extends Model {
 		'title',
 		'body',
 		'published_at',
-		'user_id'
+		'user_id',
 	];
 
 	protected $dates = ['published_at'];
@@ -25,4 +25,9 @@ class Article extends Model {
 	public function user() {
 		return $this->belongsTo('App\User');
 	}
+
+	public function tags() {
+		return $this->belongsToMany('App\Tag')->withTimestamps();
+	}
+
 }
