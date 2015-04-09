@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class ArticlesController extends Controller {
 
 	public function __construct() {
-		$this->middleware('auth', ['only' => 'create']);
+		$this->middleware('auth', ['except' => 'index', 'show']);
 	}
 
 	public function index() {
@@ -27,10 +27,8 @@ class ArticlesController extends Controller {
 
 	public function store(ArticleRequest $request) {
 		Auth::user()->articles()->create($request->all());
-		return redirect('articles')->with([
-			'flash_message' => 'Your article has been created!',
-			'flash_message_important' => true,
-		]);
+		flash()->success('Your article has been created!');
+		return redirect('articles');
 	}
 
 	public function edit(Article $article) {
