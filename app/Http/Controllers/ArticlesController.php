@@ -28,8 +28,7 @@ class ArticlesController extends Controller {
 	}
 
 	public function store(ArticleRequest $request) {
-		$article = Auth::user()->articles()->create($request->all());
-		$article->tags()->attach($request->input('tag_list'));
+		$this->createArticle($request);
 		flash()->success('Your article has been created!');
 		return redirect('articles');
 	}
@@ -39,9 +38,19 @@ class ArticlesController extends Controller {
 		return view('articles.edit', compact('article', 'tags'));
 	}
 
-	public function update(Article $article, ArticleRequest $request) {
+	public function update(ArticleRequest $request, Article $article) {
 		$article->update($request->all());
-		$article->tags()->attach($request->input('tag_list'));
+		$this->syncTags($article, $request->input('tag_list'));
 		return redirect('articles');
+	}
+
+	private function syncTags(Article $article, array $tags) {
+		$article->tags()->sync($tags);
+	}
+
+	private function createArticle(ArticleRequest $request) {
+		$article = Auth::user()->articles()->create($request->all());
+		$article->tags()->sync($article, $request->input('tag_list'));
+		return $article;
 	}
 }
