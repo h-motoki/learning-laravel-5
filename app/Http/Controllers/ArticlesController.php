@@ -40,17 +40,32 @@ class ArticlesController extends Controller {
 
 	public function update(ArticleRequest $request, Article $article) {
 		$article->update($request->all());
-		$this->syncTags($article, $request->input('tag_list'));
+		$tags = $request->input('tag_list');
+		if (!is_array($tags)) {
+			$tags = [];
+		}
+		$this->syncTags($article, $tags);
 		return redirect('articles');
 	}
 
 	private function syncTags(Article $article, array $tags) {
-		$article->tags()->sync($tags);
+		$currentTags = array_filter($tags, 'is_numeric');
+		$newTags = array_diff($tags, $currentTags);
+		foreach ($newTags as $newTag) {
+			if ($tag = Tag::create(['name' => $newTag])) {
+				$currentTags[] = $tag->id;
+			}
+		}
+		$article->tags()->sync($currentTags);
 	}
 
 	private function createArticle(ArticleRequest $request) {
 		$article = Auth::user()->articles()->create($request->all());
-		$article->tags()->sync($article, $request->input('tag_list'));
+		$tags = $request->input('tag_list');
+		if (!is_array($tags)) {
+			return $article;
+		}
+		$this->syncTags($article, $tags);
 		return $article;
 	}
 }
