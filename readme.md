@@ -36,4 +36,4 @@
     *   [Blade + illuminate/html + Select2 pluginの補足記事](http://wp.me/p5KXwv-ag)
 25.  [bladeのパーツ化とServiceProvider](http://wp.me/p5KXwv-by)
 26.  [IoC Container(Service Container)](http://site.oganity.pw/iwqg)
-27.  Loose Ends and Wrapping Up
+27.  [RouteServiceProviderで逆引き検索](http://site.oganity.pw/tech/laravel-routeserviceprovider/)
