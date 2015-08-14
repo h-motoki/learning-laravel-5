@@ -1,20 +1,6 @@
 <?php
 
-interface BarInterface {}
-
-class Bar implements BarInterface {}
-class SecondBar implements BarInterface {}
-
-if (Config::get('app.debug')) {
-	App::bind('BarInterface', 'Bar');
-}
-else {
-	App::bind('BarInterface', 'SecondBar');
-}
-
-Route::get('bar', function(BarInterface $bar) {
-	dd($bar);
-});
+Route::get('foo', 'FooController@foo');
 
 Route::get('/', function () {
 	return 'OK';
